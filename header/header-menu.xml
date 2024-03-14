@@ -1,0 +1,83 @@
+//colocar dentro de common
+<b:includable id='@PageList:menu.link'>
+  <b:if cond='contains(data:href, &quot;{&quot;) and contains(data:href, &quot;}&quot;)'>
+    <b:with expr:value='data:href' var='link'>
+      <a expr:href='data:link.href ?: &quot;#&quot;'>
+        <b:class cond='data:current' name='is-current-page'/>
+        <b:eval expr='data:link.name ?: data:name'/></a>
+    </b:with>
+  <b:else/>
+    <a expr:href='data:href'>
+      <b:class cond='data:current' name='is-current-page'/>
+      <data:name/>
+    </a>
+  </b:if>
+</b:includable>
+
+<b:includable id='@PageList:menu'>
+  <nav>
+    <b:class expr:name='&quot;a:&quot; + data:widget.sectionId'/>
+    <b:class cond='contains(data:widget.sectionId, &quot;canvas&quot;)' name='menu-canvas'/>
+    <b:class cond='contains(data:widget.sectionId, &quot;sidebar&quot;)' name='menu-sidebar'/>
+    <ul class='menu'>
+      <b:loop values='data:links' var='menu'>
+        <b:if cond='data:menu.title == &quot;sbm&quot;'>
+          &lt;li&gt;
+          <b:include data='{              href: data:menu.href,              name: data:menu.title,              current: data:menu.isCurrentPage }' name='@PageList:menu.link'/>
+          &lt;ul class=&quot;child&quot;&gt;
+        <b:elseif cond='data:menu.title == &quot;_sbm&quot;'/>
+          &lt;/ul&gt;
+          &lt;/li&gt;
+        <b:else/>
+          <li>
+            <b:include data='{                href: data:menu.href,                name: data:menu.title,                current: data:menu.isCurrentPage }' name='@PageList:menu.link'/>
+          </li>
+        </b:if>
+      </b:loop>
+    </ul>
+  </nav>
+</b:includable>
+  
+  
+ <b:includable id='@LinkList:default'>
+  <b:include name='widget-title'/>
+  <div class='widget-content'>
+    <ul class='link-list'>
+      <b:loop values='data:links' var='link'>
+        <li><a expr:href='data:link.target'>
+          <data:link.name/>
+        </a></li>
+      </b:loop>
+    </ul>
+  </div>
+</b:includable> 
+
+// colocar antes de </b:defaultmarkups>
+
+<b:defaultmarkup type='PageList'>
+  <b:includable id='main'>
+    <b:class expr:name='&quot;a:&quot; + data:widget.sectionId'/>
+    <b:if cond='contains(data:title, &quot;{&quot;) and contains(data:title, &quot;}&quot;)'>
+      <b:with expr:value='data:title' var='obj'>
+        <b:if cond='data:obj.title and contains([&quot;canvas&quot;], data:widget.sectionId) == false'>
+          <h3 class='widget-title'><data:obj.title/></h3>
+        </b:if>
+        <b:include cond='data:obj.type' expr:name='&quot;@PageList:&quot; + data:obj.type'/>
+      </b:with> 
+    <b:else/>
+      <b:include cond='contains([&quot;canvas&quot;], data:widget.sectionId) == false' name='widget-title'/>
+      <b:include name='content'/>
+    </b:if>
+  </b:includable>
+</b:defaultmarkup>
+
+<b:defaultmarkup type='LinkList'>
+  <b:includable id='main'>
+    <b:include name='@LinkList:default'/>
+  </b:includable>
+</b:defaultmarkup>
+
+// section menu 
+  <b:section class='canvas' id='canvas'>
+    <b:widget type='PageList' id='PageList1' title='{ type: "menu" }'/>
+  </b:section>
