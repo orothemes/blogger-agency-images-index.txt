@@ -1,4 +1,5 @@
-  <header class='hder'>
+// colocar section no header
+<header class='hder'>
     <b:section id='hder' maxwidgets='1'>
       <b:widget id='Header1' locked='true' title='Header' type='Header' visible='true'>
         <b:includable id='main'>
@@ -7,3 +8,18 @@
       </b:widget>
     </b:section>
   </header>
+
+// colocar includable dentro de common
+<b:includable id='@header'>
+    <div class='logo'>
+      <b:tag expr:name='data:view.isMultipleItems ? "h1" : "div"' aria-label='Website title' class='logo__text flex'>
+        <a expr:href='data:blog.homepageUrl' class='logo__link'>
+          <b:if cond='data:sourceUrl'>
+            <img expr:src='data:sourceUrl' width='100%' height='100%' alt='Logo' />
+            <b:else/>
+            <data:title/>
+          </b:if>
+        </a>
+      </b:tag>
+    </div>
+</b:includable>
