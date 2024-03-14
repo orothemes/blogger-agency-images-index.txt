@@ -1,0 +1,280 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html b:css='false' b:js='true' b:defaultwidgetversion='2' b:layoutsVersion='3' expr:dir='data:blog.locale.languageDirection' expr:lang='data:blog.locale.language' prefix='og: http://ogp.me/ns#'>
+<!--temabase v1.0.0 | Orotheme  -->
+<head>
+
+<!-- Title -->
+<title><data:view.title.escaped/></title>
+
+<!-- Meta data -->
+<b:include data='blog' name='all-head-content'/>
+
+<!-- Meta data: twitter -->
+<b:if cond='data:view.featuredImage'>
+<meta property='twitter:card' content='summary_large_image'/>
+<meta property='twitter:url' expr:content='data:view.url.canonical'/>
+<meta property='twitter:title' expr:content='data:view.title'/>
+<meta property='twitter:description' expr:content='data:view.description'/>
+<meta property='twitter:image' expr:content='resizeImage(data:view.featuredImage, "500", "500:400")'/>
+</b:if>
+
+<!-- Meta data: Viewport -->
+<meta content='width=device-width, initial-scale=1' name='viewport'/> 
+
+<b:skin><![CDATA[
+/!*
+Theme Name: TemaBase
+Theme Description: A blank template for build a blogger template
+Theme URI: https://orotheme.com
+Author: Leonardo Oro
+Version: 1.0.0
+Release under MIT License
+*/
+
+/*
+<!-- Global config -->
+<Variable name="g.cmt" description="Set comment system" type="string" value="blogger" />
+<Variable name="g.shortName" description="Set shortname for disqus comments" type="string" value="you_shortname" />
+
+*/
+
+/*
+** Main css
+*----------------------------------*/
+body{background:#fff;color:#333}
+]]></b:skin>
+
+
+<!-- Layout style css -->
+<b:if cond='data:view.isLayoutMode'>
+<b:template-skin><![CDATA[
+/* Your layout style is goes here */
+]]></b:template-skin>
+</b:if>
+</head>
+<body>
+
+<b:defaultmarkups>
+<!-- common -->
+<b:defaultmarkup type='Common'>
+<b:includable id='widget-title'>
+  <b:if cond='data:title'>
+    <h3 class='widget-title'><data:title/></h3>
+  </b:if>
+</b:includable>
+
+<b:includable id='@header'>
+    <div class='logo'>
+      <b:tag expr:name='data:view.isMultipleItems ? "h1" : "div"' expr:aria-label='data:blog.title' class='logo__text flex'>
+        <a expr:href='data:blog.homepageUrl' class='logo__link'>
+          <b:if cond='data:sourceUrl'>
+            <img expr:src='data:sourceUrl' width='100%' height='100%' expr:alt='data:blog.title' />
+            <b:else/>
+            <data:title/>
+          </b:if>
+        </a>
+      </b:tag>
+    </div>
+</b:includable>
+
+<b:includable id='@PageList:menu.link'>
+  <b:if cond='contains(data:href, &quot;{&quot;) and contains(data:href, &quot;}&quot;)'>
+    <b:with expr:value='data:href' var='link'>
+      <a expr:href='data:link.href ?: &quot;#&quot;'>
+        <b:class cond='data:current' name='is-current-page'/>
+        <b:eval expr='data:link.name ?: data:name'/></a>
+    </b:with>
+  <b:else/>
+    <a expr:href='data:href'>
+      <b:class cond='data:current' name='is-current-page'/>
+      <data:name/>
+    </a>
+  </b:if>
+</b:includable>
+
+<b:includable id='@PageList:menu'>
+  <nav>
+    <b:class expr:name='&quot;a:&quot; + data:widget.sectionId'/>
+    <b:class cond='contains(data:widget.sectionId, &quot;canvas&quot;)' name='menu-canvas'/>
+    <b:class cond='contains(data:widget.sectionId, &quot;sidebar&quot;)' name='menu-sidebar'/>
+    <ul class='menu'>
+      <b:loop values='data:links' var='menu'>
+        <b:if cond='data:menu.title == &quot;sbm&quot;'>
+          &lt;li&gt;
+          <b:include data='{              href: data:menu.href,              name: data:menu.title,              current: data:menu.isCurrentPage }' name='@PageList:menu.link'/>
+          &lt;ul class=&quot;child&quot;&gt;
+        <b:elseif cond='data:menu.title == &quot;_sbm&quot;'/>
+          &lt;/ul&gt;
+          &lt;/li&gt;
+        <b:else/>
+          <li>
+            <b:include data='{                href: data:menu.href,                name: data:menu.title,                current: data:menu.isCurrentPage }' name='@PageList:menu.link'/>
+          </li>
+        </b:if>
+      </b:loop>
+    </ul>
+  </nav>
+</b:includable>
+  
+ <b:includable id='@LinkList:default'>
+  <b:include name='widget-title'/>
+  <div class='widget-content'>
+    <ul class='link-list'>
+      <b:loop values='data:links' var='link'>
+        <li><a expr:href='data:link.target'>
+          <data:link.name/>
+        </a></li>
+      </b:loop>
+    </ul>
+  </div>
+</b:includable> 
+</b:defaultmarkup> 
+
+<b:defaultmarkup type='PageList'>
+  <b:includable id='main'>
+    <b:class expr:name='&quot;a:&quot; + data:widget.sectionId'/>
+    <b:if cond='contains(data:title, &quot;{&quot;) and contains(data:title, &quot;}&quot;)'>
+      <b:with expr:value='data:title' var='obj'>
+        <b:if cond='data:obj.title and contains([&quot;canvas&quot;], data:widget.sectionId) == false'>
+          <h3 class='widget-title'><data:obj.title/></h3>
+        </b:if>
+        <b:include cond='data:obj.type' expr:name='&quot;@PageList:&quot; + data:obj.type'/>
+      </b:with> 
+    <b:else/>
+      <b:include cond='contains([&quot;canvas&quot;], data:widget.sectionId) == false' name='widget-title'/>
+      <b:include name='content'/>
+    </b:if>
+  </b:includable>
+</b:defaultmarkup>
+
+<b:defaultmarkup type='LinkList'>
+  <b:includable id='main'>
+    <b:include name='@LinkList:default'/>
+  </b:includable>
+</b:defaultmarkup> 
+  
+</b:defaultmarkups>
+
+<b:section id='blog'>
+  <b:widget id='Blog1' type='Blog'>
+
+  <b:includable id='main' var='top'>
+
+    <!-- Loop -->
+    <b:if cond='data:view.isMultipleItems'>
+        <b:loop values='data:posts' var='post'>
+          <b:include name='post' data='post'/>
+        </b:loop>
+
+        <b:include name='postPagination'/> <!-- Pagination -->
+      <b:else/>
+        <b:loop values='data:posts' var='post'>
+          <b:include name='post' data='post'/>
+        </b:loop>
+    </b:if><!-- ./loop -->
+
+  </b:includable>
+
+  <b:includable id='post' var='post'>
+    <b:if cond='data:view.isMultipleItems'>
+      <!-- Multiple items content -->
+      
+      <b:elseif cond='data:view.isPost'/>
+      <!-- single items -->
+
+<!-- Comments -->
+<b:include name='comments' />
+
+      <b:elseif cond='data:view.isPage'/>
+      <!-- single items -->
+
+<!-- Comments -->
+<b:include name='comments' />
+    </b:if>
+  </b:includable>
+
+  <b:includable id="comment-blogger">
+    <b:include name='commentPicker' data='post'/>
+  </b:includable>
+
+  <b:includable id="comment-disqus">
+      <div id='disqus_thread'/>
+      <script>var disqus_config=function(){this.page.url="<data:view.url.canonical/>",this.page.title="<data:view.title.escaped/>"};!function(){var t=document,e=t.createElement("script");e.src="https://<data:skin.vars.g_shortName/>.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}();</script>
+  </b:includable>
+
+  <b:includable id='postPagination'>
+    <div class='blog-pager' id='blog-pager'>
+      <b:include cond='data:newerPageUrl' name='previousPageLink'/>
+      <b:include cond='data:olderPageUrl' name='nextPageLink'/>
+    </div>
+  </b:includable>
+
+  <b:includable id='previousPageLink'>
+    <b:tag name='a' expr:href='data:newerPageUrl'><data:messages.newerPosts/></b:tag>
+  </b:includable>
+
+  <b:includable id='nextPageLink'>
+    <b:tag name='a' expr:href='data:olderPageUrl'><data:messages.olderPosts/></b:tag>
+  </b:includable>
+
+  <b:includable id='status-message'>
+    <b:tag name='div'><data:navMessage/></b:tag>
+  </b:includable>
+
+  <b:includable id="comment-facebook">
+    <div id="fb-root"/>
+    <b:if cond='data:skin.vars.g_cmt == "facebook"'>
+      <script async='async' defer='defer' crossorigin='anonymous' src='https://connect.facebook.net/es_LA/all.js#xfbml=1'></script>
+    </b:if>
+    <div class='fb-comments' expr:data-href='data:view.url.canonical' data-width='100%' data-numposts='5'></div>
+  </b:includable>
+
+  <b:includable id="commentPicker" var='post'>
+    <div class='comments threaded'
+        expr:data-embed='data:post.embedCommentForm' expr:data-num-comments='data:post.numberOfComments' id='comments'>
+      <a name='comments'/>
+
+      <div class='comments-content'>
+        <div id='comment-holder'><data:post.commentHtml/></div>
+      </div>
+
+      <b:if cond='data:post.allowNewComments'>
+        <b:include data='post' name='threadedCommentForm'/>
+      <b:else/>
+        <p class='comment-footer'>
+          <data:post.noNewCommentsText/>
+        </p>
+      </b:if>
+    </div>
+  </b:includable>
+
+  <b:includable id='comments'><b:include expr:name='"comment-" + data:skin.vars.g_cmt'/></b:includable>
+
+  <b:includable id='threadedCommentForm' var='post'>
+    <div class='comment-form'>
+      <a name='comment-form'/>
+      <b:include data='post' name='commentFormIframeSrc'/>
+      <iframe class='blogger-iframe-colorize blogger-comment-from-post' id='comment-editor' name='comment-editor' src=''/>
+      <data:post.cmtfpIframe/>
+      <script type='text/javascript'>BLOG_CMT_createIframe('<data:post.appRpcRelayPath/>');//<![CDATA[
+      (function(){let img = document.querySelectorAll('.avatar-image-container img');for (var i = 0; i < img.length; i++) {let imgPath = img[i].getAttribute('src');img[i].setAttribute('src', imgPath.replace(/s\B\d{2,4}/,"s56"));}})();//]]></script>
+    </div>
+  </b:includable>
+
+  <b:includable id='threadedCommentJs' var='post'>
+    <script async='async' expr:src='data:post.commentSrc' type='text/javascript'/>
+      <b:template-script inline='true' name='threaded_comments'/>
+      <script type='text/javascript'>blogger.widgets.blog.initThreadedComments(<data:post.commentJso/>, <data:post.commentMsgs/>, <data:post.commentConfig/>);</script>
+  </b:includable>
+
+  <b:includable id='paginationLink'><!--empty--></b:includable>
+
+</b:widget> 
+</b:section>
+
+&lt;textarea id=&quot;bjs&quot; readonly hidden&gt;
+</body>
+&lt;/textarea&gt;
+<script>document.getElementById('bjs').remove()</script>&lt;/body&gt;
+</html>
