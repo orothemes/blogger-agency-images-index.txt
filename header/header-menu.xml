@@ -1,4 +1,3 @@
-// section menu 
   <b:section class='canvas' id='canvas'>
     <b:widget type='PageList' id='PageList1' title='{ type: "menu" }'/>
   </b:section>
