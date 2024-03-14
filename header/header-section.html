@@ -12,10 +12,10 @@
 // colocar includable dentro de common
 <b:includable id='@header'>
     <div class='logo'>
-      <b:tag expr:name='data:view.isMultipleItems ? "h1" : "div"' aria-label='Website title' class='logo__text flex'>
+      <b:tag expr:name='data:view.isMultipleItems ? "h1" : "div"' expr:aria-label='data:blog.title' class='logo__text flex'>
         <a expr:href='data:blog.homepageUrl' class='logo__link'>
           <b:if cond='data:sourceUrl'>
-            <img expr:src='data:sourceUrl' width='100%' height='100%' alt='Logo' />
+            <img expr:src='data:sourceUrl' width='100%' height='100%' expr:alt='data:blog.title' />
             <b:else/>
             <data:title/>
           </b:if>
