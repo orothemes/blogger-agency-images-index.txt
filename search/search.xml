@@ -1,0 +1,5 @@
+   <search role='search' class='nome-da-classe'>
+      <form action='/search' class='nome-da-classe'>
+        <input type='text' name='q' expr:placeholder='data:messages.search'/>
+      </form>
+    </search>
