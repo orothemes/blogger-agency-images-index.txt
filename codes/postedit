@@ -1,0 +1,33 @@
+// isso vai no codigo HTML, as variaveis buscam o valor de description category de dentro da postagem e exibem onde está ${DESCRIPTION} e ${CATEGORY}
+<p class='desc description-placeholder'>${DESCRIPTION}</p> // recebe o valor de description
+<p class='desc category-placeholder'>${CATEGORY}</p> // recebe o valor de category
+<script type='text/javascript'>
+ //<![CDATA[
+document.addEventListener('DOMContentLoaded', function() {
+  const postDataElement = document.querySelector('.post');
+
+  if (postDataElement && postDataElement.getAttribute('description')) {
+    const DESCRIPTION = postDataElement.getAttribute('description'); // Obtenha o atributo description
+    const CATEGORY = postDataElement.getAttribute('category'); // Obtenha o atributo category
+
+    const descriptionPlaceholder = document.querySelector('.description-placeholder');
+    const categoryPlaceholder = document.querySelector('.category-placeholder');
+
+    if (descriptionPlaceholder && categoryPlaceholder) {
+      descriptionPlaceholder.textContent = DESCRIPTION;
+      categoryPlaceholder.textContent = CATEGORY;
+    }
+  
+    return { DESCRIPTION, CATEGORY };
+  } 
+});
+//]]>
+</script> 
+
+
+// isso vai dentro do codigo de postagem
+<div class="post" 
+description="description-here"
+category="category-here"
+rate="5.0"      
+></div>
