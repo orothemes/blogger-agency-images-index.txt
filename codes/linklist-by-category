@@ -1,0 +1,136 @@
+<b:section id='99'>
+    <b:widget cond='data:view.isHomepage' id='LinkList99' locked='false' title='' type='LinkList' version='2' visible='true'>
+      <b:widget-settings>
+        <b:widget-setting name='sorting'>NONE</b:widget-setting>
+        <b:widget-setting name='text-0'>All</b:widget-setting>
+        <b:widget-setting name='link-0'>All</b:widget-setting>
+      </b:widget-settings>
+      <b:includable id='main'>
+      <b:loop values='data:links' var='i'>
+               <div class='row course-items-v3 swiper-wrapper' data-max-results='6' expr:data-category='data:i.target'>
+                  <svg class='circular' xmlns='http://www.w3.org/2000/svg'><circle class='path'/></svg>
+               </div>
+      </b:loop>
+<link href='https://cdn.jsdelivr.net/gh/orothemes/orotheme/spinner.min.css' rel='stylesheet'/><script type='text/javascript'>//<![CDATA[
+var callbacks = {};
+var defaults = {
+  homeUrl: window.location.protocol + "//" + window.location.hostname, // Url blog
+  image: "img/no-img-blogger.png", // Default image
+  className: ".swiper-wrapper",
+  snippet: 100, // Quantity of text for the summary
+  imgSize: "w300-h450-p-k-no-nu", // Quantity of text for the summary
+  rate: 10,
+  entry_type: "" ,
+};
+var section = {
+  category: null,
+  "max-results": 25,
+  template: {
+    default:
+      '<div class="col-lg-4 col-sm-6 aos-init aos-animate" data-aos="fade-up" data-aos-delay="1"><div class="course-item"><a class="course-item-thumb" href="URL"><img alt="TITLE" src="IMG"/></a><div class="course-item-body p-0"><div class="course-item-body-inner"><div class="course-item-header course-item-info justify-content-end"><ul class="course-category"><li><a href="#">CATEGORY</a></li></ul><ul class="course-item-info justify-content-end"><li class="rating-review"><span class="total-review"><i class="fas fa-star"></i>RATE</span></li></ul></div><h4 class="title"><a href="URL">TITLE</a><ul class="course-item-info "><li><i class="fal fa-file-alt"></i>LESSONS</li><li><i class="fal fa-user-friends"></i>ENROLL</li></ul></h4></div><div class="course-item-footer"><div class="course-price">PRICE</div><ul><li><a href="URL" class="template-btn">Details</a></li></ul></div></div></div></div>',
+    empty: '<p class="wjs1-alert">No entries found</p>',
+  },
+};
+function forEach(items, callback) {
+  var i, item;
+  for (i = 0; (item = items[i++]); )
+    if (false === callback.call(item, i, item)) break;
+  return items;
+}
+function getCurrentData(element) {
+  var name, value;
+  var obj = {};
+  for (name in section) {
+    value = element.getAttribute("data-" + name);
+    if (value) obj[name] = value;
+  }
+  return obj;
+}
+function temp(content, data) {
+  var name;
+  for (name in data)
+    content = content.replace(new RegExp(name, "g"), data[name]);
+  return content;
+}
+function getLabel(element, data) {
+  var name;
+  var category = data.category;
+  var script = document.createElement("script");
+  var src =
+    defaults.homeUrl +
+    "/feeds/posts/default?alt=json-in-script&callback=callbacks." +
+    category;
+
+  callbacks[category] = function (json) {
+    var i, post;
+    var html = "";
+    var entry = json.feed.entry;
+    if (entry)
+      for (i = 0; (post = entry[i++]); ) {
+        var content = post.content;
+        var summary = post.summary;
+        var body = content ? content.$t : summary.$t;
+        // var img = post.media$thumbnail;
+        var tempHtml = document.createElement("div");
+        tempHtml.innerHTML = body;
+        // var imgHtml = tempHtml.querySelector("img");
+        html += temp(data.template, {
+          IMG: 
+          // (img ? img.url : imgHtml ? imgHtml.src : defaults.image).replace(
+          //   /s\B\d{2,4}-c/,
+          //   defaults.imgSize
+          // )
+          tempHtml.querySelector(".blogger-entry-data").getAttribute("entry-bg")
+          ,
+          TITLE: post.title.$t,
+          TIME: new Date(post.published.$t).toLocaleDateString("en-US", {
+            month: "long",
+            day: "2-digit",
+          }),
+          SNIPPET:
+            body.replace(/<[^>]*>?/g, "").substring(0, defaults.snippet) +
+            "...",
+          URL: function () {
+            var i, link;
+            for (i = 0; (link = post.link[i++]); )
+              if (link.rel === "alternate") return link.href;
+          },
+          CATEGORY:   tempHtml.querySelector(".blogger-entry-data").getAttribute("category"),
+          RATE:       tempHtml.querySelector(".blogger-entry-data").getAttribute("rate"),
+          LESSONS:    tempHtml.querySelector(".blogger-entry-data").getAttribute("lessons"),
+          ENROLL:     tempHtml.querySelector(".blogger-entry-data").getAttribute("enroll"),
+          PRICE:      tempHtml.querySelector(".blogger-entry-data").getAttribute("price")
+        });
+      }
+    else html += section.template.empty;
+    element.innerHTML = html;
+  };
+  for (name in data)
+    if (name !== "template") src += "&" + name + "=" + data[name];
+  script.src = src;
+  document.body.appendChild(script);
+}
+forEach(
+  document.querySelectorAll(defaults.className),
+  function (index, element) {
+    var currentData = getCurrentData(element);
+    if (currentData.category) {
+      if (!currentData["max-results"])
+        currentData["max-results"] = section["max-results"];
+      currentData.template = section.template["default"];
+      getLabel(element, currentData);
+    }
+  }
+);
+//]]>
+               
+        
+      </script>
+        </b:includable>
+      <b:includable id='content'>
+          <div class='widget-content'>
+            <b:include expr:name='&quot;widget:&quot; + data:widget.type'/>
+          </div>
+        </b:includable>
+    </b:widget>
+  </b:section> 
